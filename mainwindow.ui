@@ -61,7 +61,7 @@
         <enum>QFrame::Plain</enum>
        </property>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QPlainTextEdit" name="mdEditPane">
@@ -73,7 +73,7 @@
           </property>
           <property name="font">
            <font>
-            <family>Inconsolata-g</family>
+            <family>Inconsolata</family>
            </font>
           </property>
           <property name="frameShadow">
@@ -111,7 +111,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Fi&amp;le</string>
     </property>
     <addaction name="actionNew_Note"/>
     <addaction name="actionOpen_Note"/>
@@ -128,17 +128,17 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Note">
    <property name="text">
-    <string>New Note</string>
+    <string>&amp;New Note</string>
    </property>
   </action>
   <action name="actionOpen_Note">
    <property name="text">
-    <string>Open Note</string>
+    <string>&amp;Open Note</string>
    </property>
   </action>
   <action name="actionSave_Note">
    <property name="text">
-    <string>Save Note</string>
+    <string>&amp;Save Note</string>
    </property>
   </action>
  </widget>

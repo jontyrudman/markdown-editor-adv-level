@@ -22,6 +22,8 @@ public:
 private slots:
     void on_actionOpen_Note_triggered();
 
+    void on_actionSave_Note_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
