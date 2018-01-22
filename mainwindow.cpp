@@ -15,9 +15,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_Note_triggered()
 {
+    // Opens a file dialog and sets fileName to the selected *.md file
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Note"), "",
                                                     tr("Note (*.md)"));
+
+    // If the file is empty or can't be opened, do not attempt to go further
     if (fileName.isEmpty())
         return;
     else {
@@ -26,7 +29,8 @@ void MainWindow::on_actionOpen_Note_triggered()
             QMessageBox::information(this, tr("Unable to open file"), file.errorString());
             return;
         }
-        ui->mdEditPane->setPlainText(file.readAll());
-        file.close();
+    // Read the file and set the test of mdEditPane to it
+    ui->mdEditPane->setPlainText(file.readAll());
+    file.close();
     }
 }
