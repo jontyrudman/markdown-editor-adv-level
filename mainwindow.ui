@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Editor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -116,6 +116,7 @@
     <addaction name="actionNew_Note"/>
     <addaction name="actionOpen_Note"/>
     <addaction name="actionSave_Note"/>
+    <addaction name="actionSave_Note_As"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -127,18 +128,35 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Note">
+   <property name="icon">
+    <iconset theme="document-new"/>
+   </property>
    <property name="text">
     <string>&amp;New Note</string>
    </property>
   </action>
   <action name="actionOpen_Note">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
     <string>&amp;Open Note</string>
    </property>
   </action>
   <action name="actionSave_Note">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
    <property name="text">
     <string>&amp;Save Note</string>
+   </property>
+  </action>
+  <action name="actionSave_Note_As">
+   <property name="icon">
+    <iconset theme="document-save-as"/>
+   </property>
+   <property name="text">
+    <string>Save Note As</string>
    </property>
   </action>
  </widget>

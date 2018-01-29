@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    notebook->setRootDir(ui->folderPane);
 }
 
 MainWindow::~MainWindow()
@@ -35,7 +37,7 @@ void MainWindow::on_actionOpen_Note_triggered()
     }
 }
 
-void MainWindow::on_actionSave_Note_triggered()
+void MainWindow::on_actionSave_Note_As_triggered()
 {
     // Opens a file dialog and sets fileName to the selected *.md file
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -47,7 +49,6 @@ void MainWindow::on_actionSave_Note_triggered()
     if (fileName.isEmpty())
         return;
     else {
-        fileName += ".md";
         QFile file(fileName);
         if (!file.open(QFile::WriteOnly | QFile::Text)) {
             QMessageBox::information(this, tr("Unable to open file"), file.errorString());
@@ -58,4 +59,11 @@ void MainWindow::on_actionSave_Note_triggered()
     stream << ui->mdEditPane->toPlainText() << endl;
     file.close();
     }
+}
+
+
+void MainWindow::on_folderPane_clicked(const QModelIndex &index)
+{
+    if (!notebook->setNote(ui->mdEditPane, index.data().toString()))
+        QMessageBox::information(this, tr("Error"), tr("Unable to open file"));
 }
