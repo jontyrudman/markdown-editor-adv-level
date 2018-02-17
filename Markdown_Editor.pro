@@ -24,13 +24,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    Include/notebook.cpp
+    include/notebook.cpp \
+    main.cpp \
+    mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    Include/notebook.h
+    include/notebook.h \
+    mainwindow.h
 
 FORMS += \
         mainwindow.ui

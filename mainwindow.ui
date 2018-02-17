@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Editor</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
@@ -116,7 +119,6 @@
     <addaction name="actionNew_Note"/>
     <addaction name="actionOpen_Note"/>
     <addaction name="actionSave_Note"/>
-    <addaction name="actionSave_Note_As"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -129,7 +131,8 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Note">
    <property name="icon">
-    <iconset theme="document-new"/>
+    <iconset theme="document-new">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;New Note</string>
@@ -137,7 +140,8 @@
   </action>
   <action name="actionOpen_Note">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset theme="document-open">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Open Note</string>
@@ -145,18 +149,11 @@
   </action>
   <action name="actionSave_Note">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Save Note</string>
-   </property>
-  </action>
-  <action name="actionSave_Note_As">
-   <property name="icon">
-    <iconset theme="document-save-as"/>
-   </property>
-   <property name="text">
-    <string>Save Note As</string>
    </property>
   </action>
  </widget>
