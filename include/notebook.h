@@ -17,10 +17,12 @@ public:
     bool newNote(QPlainTextEdit *mdEditPane, QTreeView *folderPane);
     bool setNote(QPlainTextEdit *mdEditPane, const QModelIndex &index);
     bool saveNote(QPlainTextEdit *mdEditPane);
-    bool setRootDir(QTreeView *folderPane, QString newRoot = QDir::homePath() + "/Documents/Untitled");
+    bool compileNote(QPlainTextEdit *mdEditPane, QTextEdit *compilePane);
+    bool setRootDir(QTreeView *folderPane, QString newRoot = QDir::homePath() + "/Documents/Notebooks/Untitled");
     QDir rootDir();
     QFile &noteFile();
-    QString notePath(const QModelIndex &index);
+    QString notePath();
+    QString noteHtmlPath();
 private:
     QFileSystemModel *model = new QFileSystemModel;
     QFile note;

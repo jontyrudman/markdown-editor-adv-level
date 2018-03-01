@@ -1,11 +1,15 @@
 #include "notebook.h"
+#include "markdown.h"
+extern "C" {
+#include "sundown.c"
+}
 
 bool Notebook::newNote(QPlainTextEdit *mdEditPane, QTreeView *folderPane)
 {
     bool ok;
     QString noteName = QInputDialog::getText(mdEditPane, QObject::tr("New Note"),
                                          QObject::tr("New note name:"), QLineEdit::Normal,
-                                         "untitled", &ok) + ".md";
+                                         "untitled", &ok);
 
     // FUTURE-PROOFING - Set the current working directory
     // to the absolute dir path of the selected note.
@@ -14,13 +18,18 @@ bool Notebook::newNote(QPlainTextEdit *mdEditPane, QTreeView *folderPane)
             parentDir = model->filePath(folderPane->currentIndex());
     QDir::setCurrent(parentDir);
 
-    if (noteName.isEmpty() || QDir::current().exists(noteName))
+    if (noteName.isEmpty() || noteName.count(' ') == noteName.length())
+      return false;
+
+    noteName += ".md";
+
+    if (QDir::current().exists(noteName))
+      return false;
+
+    note.setFileName(noteName);
+    if (!note.open(QFile::ReadWrite | QFile::Text)) {
         return false;
-    else {
-        note.setFileName(noteName);
-        if (!note.open(QFile::ReadWrite | QFile::Text)) {
-            return false;
-        }
+    }
     // Read the file and put it into mdEditPane
     mdEditPane->setPlainText(note.readAll());
     note.close();
@@ -29,8 +38,9 @@ bool Notebook::newNote(QPlainTextEdit *mdEditPane, QTreeView *folderPane)
     const QModelIndex idx = model->index(QDir::current().absoluteFilePath(noteName));
     folderPane->setCurrentIndex(idx);
 
+    mdEditPane->setReadOnly(false);
+
     return true;
-    }
 }
 
 bool Notebook::setNote(QPlainTextEdit *mdEditPane, const QModelIndex &index)
@@ -49,11 +59,13 @@ bool Notebook::setNote(QPlainTextEdit *mdEditPane, const QModelIndex &index)
         if (!note.open(QFile::ReadWrite | QFile::Text)) {
             return false;
         }
-    // Read the file and put it into mdEditPane
-    mdEditPane->setPlainText(note.readAll());
-    note.close();
-    return true;
+        // Read the file and put it into mdEditPane
+        mdEditPane->setPlainText(note.readAll());
+        note.close();
+        mdEditPane->setReadOnly(false);
+        return true;
     }
+    return false;
 }
 
 bool Notebook::saveNote(QPlainTextEdit *mdEditPane)
@@ -68,10 +80,42 @@ bool Notebook::saveNote(QPlainTextEdit *mdEditPane)
         }
     // Read mdEditPane into the file
     QTextStream stream(&note);
-    stream << mdEditPane->toPlainText() << endl;
+    stream << mdEditPane->toPlainText().trimmed() << endl;
     note.close();
     return true;
     }
+}
+
+bool Notebook::compileNote(QPlainTextEdit *mdEditPane, QTextEdit *compilePane)
+{
+    // Saves the note and gives sundown_parse the path of the current markdown file
+    saveNote(mdEditPane);
+    QFile htmlFile;
+
+    QString mdPathString = notePath();
+    QString htmlPathString = noteHtmlPath();
+
+    // Declares char arrays of the input and output paths to give to sundown_parse
+    QByteArray ba = mdPathString.toLatin1();
+    char *mdPath = ba.data();
+    ba = htmlPathString.toLatin1();
+    char *htmlPath = ba.data();
+
+    if (sundown_parse(mdPath, htmlPath) != 0)
+        return false;
+
+    if (!htmlPath)
+        return false;
+
+    // Opens htmlFile and writes the html to compilePane
+    htmlFile.setFileName(htmlPath);
+    if (!htmlFile.open(QFile::ReadOnly | QFile::Text)) {
+        return false;
+    }
+    QTextStream stream(&htmlFile);
+
+    compilePane->setText(stream.readAll());
+    return true;
 }
 
 bool Notebook::setRootDir(QTreeView *folderPane, QString newRoot)
@@ -102,6 +146,10 @@ bool Notebook::setRootDir(QTreeView *folderPane, QString newRoot)
     folderPane->setModel(model);
     folderPane->setRootIndex(model->index(root.path()));
 
+    // Removes all columns other than "Name".
+    for (int i = 1; i < model->columnCount(); i++)
+        folderPane->hideColumn(i);
+
     return true;
 }
 
@@ -115,7 +163,16 @@ QFile& Notebook::noteFile()
     return note;
 }
 
-QString Notebook::notePath(const QModelIndex &index)
+QString Notebook::notePath()
 {
-    return model->filePath(index);
+    QString mdPath = QDir::currentPath() + "/" + note.fileName();
+    return mdPath;
+}
+
+QString Notebook::noteHtmlPath()
+{
+    QString htmlPath = notePath();
+    htmlPath.chop(2);
+    htmlPath += "html";
+    return htmlPath;
 }

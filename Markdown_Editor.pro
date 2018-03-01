@@ -12,7 +12,7 @@ TARGET = Markdown_Editor
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
-# any feature of Qt which has been marked as deprecated (the exact warnings
+# any featu"re of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
@@ -26,11 +26,40 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     include/notebook.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    include/md-parser/autolink.c \
+    include/md-parser/buffer.c \
+    include/md-parser/markdown.c \
+    include/md-parser/stack.c \
+    include/md-parser/html.c \
+    include/md-parser/sundown.c \
+    include/md-parser/houdini_href_e.c \
+    include/md-parser/houdini_html_e.c \
+    notebookswitcher.cpp
 
 HEADERS += \
     include/notebook.h \
-    mainwindow.h
+    mainwindow.h \
+    include/md-parser/autolink.h \
+    include/md-parser/buffer.h \
+    include/md-parser/html_blocks.h \
+    include/md-parser/markdown.h \
+    include/md-parser/stack.h \
+    include/md-parser/html.h \
+    include/md-parser/houdini.h \
+    include/md-parser/html_blocks.h \
+    notebookswitcher.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    notebookswitcher.ui
+
+INCLUDEPATH += \
+        include \
+        include/md-parser \
+        /usr/include/glib-2.0 \
+        /usr/lib/glib-2.0/include
+
+LIBS += \
+#        -L"include/peg-markdown" -lpeg-markdown \
+        -L"/usr/lib/glib-2.0/include" -lglib-2.0
