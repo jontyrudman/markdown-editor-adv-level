@@ -118,8 +118,9 @@ bool Notebook::compileNote(QPlainTextEdit *mdEditPane, QTextEdit *compilePane)
     return true;
 }
 
-bool Notebook::setRootDir(QTreeView *folderPane, QString newRoot)
+bool Notebook::setRootDir(QTreeView *folderPane, QLabel *labelNoteTitle, QString newRoot)
 {
+    newRoot = QDir::homePath() + "/Documents/Notebooks/" + newRoot;
     // Makes the parent directories, if non-existent, necessary for newRoot.
     if (!root.mkpath(newRoot))
         return false;
@@ -149,6 +150,9 @@ bool Notebook::setRootDir(QTreeView *folderPane, QString newRoot)
     // Removes all columns other than "Name".
     for (int i = 1; i < model->columnCount(); i++)
         folderPane->hideColumn(i);
+
+    // Sets the text of labelNoteTitle to the notebook name
+    labelNoteTitle->setText(rootDir().dirName());
 
     return true;
 }

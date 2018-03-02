@@ -18,9 +18,8 @@ void MainWindow::ui_init()
 {
     QDir::setCurrent(QDir::homePath() + "/Documents/Notebooks");
     // Tries to set the default notebook
-    if (!notebook->setRootDir(ui->folderPane))
+    if (!notebook->setRootDir(ui->folderPane, ui->labelNoteTitle))
         QMessageBox::information(this, "Error", "Error setting the notebook.");
-    ui->labelNoteTitle->setText(notebook->rootDir().dirName());
 }
 
 void MainWindow::on_actionSave_Note_triggered()
@@ -50,5 +49,57 @@ void MainWindow::on_compileButton_clicked()
 
 void MainWindow::on_actionSwitch_Notebook_triggered()
 {
+    QStringList notebooks;
+    QString notebookName;
+    QString tmp;
 
+    // Makes a list of all valid directories in Documents/Notebooks
+    QDirIterator it(QDir::homePath() + "/Documents/Notebooks", QDir::Dirs | QDir::NoDotAndDotDot);
+    while (it.hasNext()) {
+        // Removes the stuff before the directory name
+        tmp = it.next();
+        tmp.remove(0, tmp.lastIndexOf('/') + 1);
+        notebooks.append(tmp);
+    }
+
+    // Makes a new NotebookSwitcher and gives it the list found
+    NotebookSwitcher *dialog = new NotebookSwitcher;
+    dialog->setNotebookList(notebooks);
+
+    // If the user clicks ok, get the selected notebook and call setRootDir for it
+    if (dialog->exec()) {
+        notebookName = dialog->selectedNotebook();
+        if (!notebookName.isNull())
+            notebook->setRootDir(ui->folderPane, ui->labelNoteTitle, notebookName);
+    }
+
+    delete dialog;
+}
+
+void MainWindow::on_actionNew_Notebook_triggered()
+{
+    QStringList notebooks;
+    QString notebookName;
+    QString tmp;
+
+    // Makes a list of all valid directories in Documents/Notebooks
+    QDirIterator it(QDir::homePath() + "/Documents/Notebooks", QDir::Dirs | QDir::NoDotAndDotDot);
+    while (it.hasNext()) {
+        // Removes the stuff before the directory name
+        tmp = it.next();
+        tmp.remove(0, tmp.lastIndexOf('/') + 1);
+        notebooks.append(tmp);
+    }
+
+    // Open an input dialog for the user to enter the name of their new notebook
+    bool ok;
+    notebookName = QInputDialog::getText(this, QObject::tr("New Notebook"),
+                                         QObject::tr("New notebook name:"), QLineEdit::Normal,
+                                         "untitled", &ok);
+
+    // If a valid notebook name is entered, call setRootDir for it
+    if (!notebookName.isEmpty() && (ok == true) && !notebooks.contains(notebookName))
+        notebook->setRootDir(ui->folderPane, ui->labelNoteTitle, notebookName);
+    else
+        QMessageBox::information(this, tr("Error"), tr("Unable to create notebook. May already exist."));
 }

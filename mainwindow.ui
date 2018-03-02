@@ -237,11 +237,17 @@
    </property>
   </action>
   <action name="actionNew_Notebook">
+   <property name="icon">
+    <iconset theme="document-new"/>
+   </property>
    <property name="text">
     <string>New Notebook</string>
    </property>
   </action>
   <action name="actionSwitch_Notebook">
+   <property name="icon">
+    <iconset theme="edit-redo"/>
+   </property>
    <property name="text">
     <string>Switch Notebook</string>
    </property>

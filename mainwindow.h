@@ -9,6 +9,7 @@
 #include <QTreeView>
 #include <QLabel>
 #include "notebook.h"
+#include "notebookswitcher.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,8 @@ private slots:
     void on_compileButton_clicked();
 
     void on_actionSwitch_Notebook_triggered();
+
+    void on_actionNew_Notebook_triggered();
 
 private:
     Ui::MainWindow *ui;
