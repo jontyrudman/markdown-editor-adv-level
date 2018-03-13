@@ -43,7 +43,7 @@ bool Notebook::newNote(QPlainTextEdit *mdEditPane, QTreeView *folderPane)
     return true;
 }
 
-bool Notebook::setNote(QPlainTextEdit *mdEditPane, const QModelIndex &index)
+bool Notebook::setNote(QPlainTextEdit *mdEditPane, QTextEdit *compilePane, const QModelIndex &index)
 {
     QString noteName = model->fileName(index);
     // If the file is empty or can't be opened, do not attempt to go further.
@@ -60,9 +60,17 @@ bool Notebook::setNote(QPlainTextEdit *mdEditPane, const QModelIndex &index)
             return false;
         }
         // Read the file and put it into mdEditPane
+        mdEditPane->clear();
+        compilePane->clear();
         mdEditPane->setPlainText(note.readAll());
         note.close();
         mdEditPane->setReadOnly(false);
+
+        // If a compiled doc already exists, display it
+        QFileInfo check_file(noteHtmlPath());
+        if (check_file.exists() && check_file.isFile())
+            if (!displayCompiledNote(compilePane, noteHtmlPath()))
+                return false;
         return true;
     }
     return false;
@@ -90,7 +98,6 @@ bool Notebook::compileNote(QPlainTextEdit *mdEditPane, QTextEdit *compilePane)
 {
     // Saves the note and gives sundown_parse the path of the current markdown file
     saveNote(mdEditPane);
-    QFile htmlFile;
 
     QString mdPathString = notePath();
     QString htmlPathString = noteHtmlPath();
@@ -106,6 +113,16 @@ bool Notebook::compileNote(QPlainTextEdit *mdEditPane, QTextEdit *compilePane)
 
     if (!htmlPath)
         return false;
+
+    if (!displayCompiledNote(compilePane, htmlPath))
+        return false;
+
+    return true;
+}
+
+bool Notebook::displayCompiledNote(QTextEdit *compilePane, QString htmlPath)
+{
+    QFile htmlFile;
 
     // Opens htmlFile and writes the html to compilePane
     htmlFile.setFileName(htmlPath);
@@ -179,4 +196,21 @@ QString Notebook::noteHtmlPath()
     htmlPath.chop(2);
     htmlPath += "html";
     return htmlPath;
+}
+
+QStringList Notebook::notebookList()
+{
+    QStringList notebooks;
+    QString tmp;
+
+    // Makes a list of all valid directories in Documents/Notebooks
+    QDirIterator it(QDir::homePath() + "/Documents/Notebooks", QDir::Dirs | QDir::NoDotAndDotDot);
+    while (it.hasNext()) {
+        // Removes the stuff before the directory name
+        tmp = it.next();
+        tmp.remove(0, tmp.lastIndexOf('/') + 1);
+        notebooks.append(tmp);
+    }
+
+    return notebooks;
 }

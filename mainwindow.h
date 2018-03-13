@@ -38,6 +38,20 @@ private slots:
 
     void on_actionNew_Notebook_triggered();
 
+    void on_actionUndo_triggered();
+
+    void on_actionRedo_triggered();
+
+    void on_actionCut_triggered();
+
+    void on_actionCopy_triggered();
+
+    void on_actionPaste_triggered();
+
+    void on_actionSelect_All_triggered();
+
+    void switchNotebookDialog();
+
 private:
     Ui::MainWindow *ui;
     // Instantiate a notebook
