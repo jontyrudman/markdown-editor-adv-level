@@ -254,8 +254,17 @@
     <addaction name="actionPaste"/>
     <addaction name="actionSelect_All"/>
    </widget>
+   <widget class="QMenu" name="menuSync">
+    <property name="title">
+     <string>Sync</string>
+    </property>
+    <addaction name="actionSet_Repository"/>
+    <addaction name="actionCreate_Repository"/>
+    <addaction name="actionCommit_Changes"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuSync"/>
   </widget>
   <action name="actionNew_Note">
    <property name="icon">
@@ -387,6 +396,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionSet_Repository">
+   <property name="text">
+    <string>Set Repository</string>
+   </property>
+  </action>
+  <action name="actionCreate_Repository">
+   <property name="text">
+    <string>Create Repository</string>
+   </property>
+  </action>
+  <action name="actionCommit_Changes">
+   <property name="text">
+    <string>Commit Changes</string>
    </property>
   </action>
  </widget>

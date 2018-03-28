@@ -9,7 +9,10 @@
 #include <QTreeView>
 #include <QLabel>
 #include "notebook.h"
+#include "search.h"
 #include "notebookswitcher.h"
+#include "gitlogin.h"
+#include "gitapi.h"
 
 namespace Ui {
 class MainWindow;
@@ -51,6 +54,10 @@ private slots:
     void on_actionSelect_All_triggered();
 
     void switchNotebookDialog();
+
+    void on_searchBox_returnPressed();
+
+    void on_actionSet_Repository_triggered();
 
 private:
     Ui::MainWindow *ui;

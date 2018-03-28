@@ -88,6 +88,7 @@ bool Notebook::saveNote(QPlainTextEdit *mdEditPane)
         }
     // Read mdEditPane into the file
     QTextStream stream(&note);
+    // Trim the note to remove extra new lines
     stream << mdEditPane->toPlainText().trimmed() << endl;
     note.close();
     return true;

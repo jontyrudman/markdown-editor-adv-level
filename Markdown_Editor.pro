@@ -35,7 +35,10 @@ SOURCES += \
     include/md-parser/sundown.c \
     include/md-parser/houdini_href_e.c \
     include/md-parser/houdini_html_e.c \
-    notebookswitcher.cpp
+    notebookswitcher.cpp \
+    include/search.cpp \
+    include/gitapi.cpp \
+    gitlogin.cpp
 
 HEADERS += \
     include/notebook.h \
@@ -48,11 +51,16 @@ HEADERS += \
     include/md-parser/html.h \
     include/md-parser/houdini.h \
     include/md-parser/html_blocks.h \
-    notebookswitcher.h
+    notebookswitcher.h \
+    include/search.h \
+    include/gitapi.h \
+    include/json.hpp \
+    gitlogin.h
 
 FORMS += \
         mainwindow.ui \
-    notebookswitcher.ui
+    notebookswitcher.ui \
+    gitlogin.ui
 
 INCLUDEPATH += \
         include \
@@ -61,5 +69,5 @@ INCLUDEPATH += \
         /usr/lib/glib-2.0/include
 
 LIBS += \
-#        -L"include/peg-markdown" -lpeg-markdown \
-        -L"/usr/lib/glib-2.0/include" -lglib-2.0
+        -L"/usr/lib/glib-2.0/include" -lglib-2.0 \
+        -L/usr/local/lib/ -lrestclient-cpp

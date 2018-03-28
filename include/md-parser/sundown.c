@@ -27,7 +27,7 @@
 #define READ_UNIT 1024
 #define OUTPUT_UNIT 64
 
-/* main • main function, interfacing files with the parser */
+/* main - main function, interfacing files with the parser */
 int *
 sundown_parse(char *input, char *output)
 {

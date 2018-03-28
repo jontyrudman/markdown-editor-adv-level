@@ -35,6 +35,9 @@ void MainWindow::on_folderPane_clicked(const QModelIndex &index)
         QMessageBox::information(this, tr("Error"), tr("Unable to open file"));
         return;
     }
+    ui->actionSave_Note->setEnabled(true);
+    ui->actionCompile_Note->setEnabled(true);
+    ui->compileButton->setEnabled(true);
 }
 
 void MainWindow::on_actionNew_Note_triggered()
@@ -43,6 +46,8 @@ void MainWindow::on_actionNew_Note_triggered()
         QMessageBox::information(this, tr("Error"), tr("Unable to create file"));
         return;
     }
+    ui->actionCompile_Note->setEnabled(true);
+    ui->compileButton->setEnabled(true);
 }
 
 void MainWindow::on_compileButton_clicked()
@@ -139,4 +144,36 @@ void MainWindow::switchNotebookDialog()
     }
 
     delete dialog;
+}
+
+void MainWindow::on_searchBox_returnPressed()
+{
+    // If nothing has been inputted, tell the user to input a search term
+    if (ui->searchBox->text().isEmpty()) {
+        QMessageBox::information(this, tr("Search"), tr("Please input a search term."));
+        return;
+    }
+
+    Search s;
+    // Try to find the search term in the current notebook's notes
+    if (!s.findInFiles(ui->searchBox->text(), notebook->rootDir().absolutePath())) {
+        QMessageBox::information(this, tr("Search"), tr("Could not find any files."));
+        return;
+    }
+
+    QStringList results = s.getResults();
+    QString text = results.join("\n");
+
+    // Display the search results and disable any file handling functions
+    ui->actionSave_Note->setEnabled(false);
+    ui->actionCompile_Note->setEnabled(false);
+    ui->compileButton->setEnabled(false);
+    ui->mdEditPane->setPlainText("Search results:\n" + text);
+    ui->compilePane->clear();
+    ui->folderPane->clearSelection();
+}
+
+void MainWindow::on_actionSet_Repository_triggered()
+{
+
 }
